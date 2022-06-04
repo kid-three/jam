@@ -29,7 +29,21 @@ export const getStaticProps = async ({ params }) => {
     'fields.slug': params.slug,
   });
 
-  return { props: { recipe: items[0] }, revalidate: 10 };
+  if (!items.length) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      recipe: items[0],
+    },
+    revalidate: 10,
+  };
 };
 
 export default function RecipeDetails({ recipe }) {
