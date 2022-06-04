@@ -2,6 +2,7 @@ import { createClient, RichTextContent } from 'contentful';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 
 import Image from 'next/image';
+import Skteleton from '../../components/Skteleton';
 
 const client = createClient({
   space: process.env.CONTENTFULL_SPACE_ID,
@@ -18,7 +19,7 @@ export const getStaticPaths = async () => {
 
   return {
     paths,
-    fallback: false,
+    fallback: true,
   };
 };
 
@@ -32,7 +33,9 @@ export const getStaticProps = async ({ params }) => {
 };
 
 export default function RecipeDetails({ recipe }) {
-  console.log(recipe);
+  if (!recipe) {
+    return <Skteleton />;
+  }
   const { featuredImage, title, cookingTime, method, ingredients } =
     recipe.fields;
   return (
